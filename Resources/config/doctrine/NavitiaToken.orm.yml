@@ -1,0 +1,40 @@
+CanalTP\NmmPortalBundle\Entity\NavitiaToken:
+    type: entity
+    table: t_navitia_token_nat
+    repositoryClass: CanalTP\NmmPortalBundle\Entity\NavitiaTokenRepository
+    id:
+        id:
+            type: integer
+            id: true
+            column: nat_id
+            generator:
+                strategy: AUTO
+    fields:
+        token:
+            type: string
+            length: 255
+            column: nat_token
+        isActive:
+            type: boolean
+            column: nat_is_active
+        created:
+            type: datetime
+            column: nat_created
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            column: nat_updated
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        navitiaEntity:
+            targetEntity: CanalTP\NmmPortalBundle\Entity\NavitiaEntity
+            inversedBy: tokens
+            cascade: [persist]
+            joinColumn:
+                name: nav_id
+                referencedColumnName: nav_id
+    lifecycleCallbacks: {  }

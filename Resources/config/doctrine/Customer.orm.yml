@@ -1,0 +1,67 @@
+CanalTP\NmmPortalBundle\Entity\Customer:
+    type: entity
+    table: public.tr_customer_cus
+    repositoryClass: CanalTP\NmmPortalBundle\Entity\CustomerRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            column: cus_id
+            generator:
+                strategy: SEQUENCE
+        identifier:
+            type: string
+            column: cus_identifier
+            length: 255
+            nullable: false
+        name:
+            type: string
+            column: cus_name
+            length: 255
+            nullable: false
+        nameCanonical:
+            type: string
+            column: cus_name_canonical
+            length: 255
+            nullable: false
+        logoPath:
+            type: string
+            column: cus_logo_path
+            length: 255
+            nullable: true
+        locked:
+            type: boolean
+            column: cus_locked
+            nullable: false
+        created:
+            type: datetime
+            column: cus_created
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            column: cus_updated
+            gedmo:
+                timestampable:
+                    on: update
+    uniqueConstraints:
+        name_idx:
+            columns: [ cus_name, cus_name_canonical ]
+        identifier_idx:
+            columns: [ identifier ]
+    oneToMany:
+        applications:
+            targetEntity: CanalTP\NmmPortalBundle\Entity\CustomerApplication
+            mappedBy: customer
+            cascade: [persist]
+        users:
+            targetEntity: CanalTP\SamEcoreUserManagerBundle\Entity\User
+            mappedBy: customer
+    oneToOne:
+        navitiaEntity:
+            targetEntity: NavitiaEntity
+            cascade: [persist]
+            joinColumn:
+                name: cus_navitia_entity
+                referencedColumnName: nav_id

@@ -1,0 +1,66 @@
+{% extends "CanalTPSamCoreBundle::generic_list.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 'bundles/canaltpsamcore/css/customer.css' %}
+         <link rel="stylesheet" href="{{ asset_url }}?{{ assets_version }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block left_menu -%}
+    <a class="btn btn-default" href="{{ path('sam_customer_list') }}">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        {{'customer.list'|trans}}
+    </a>
+    {% if withTyr %}
+    <br/><br/>
+    <a class="btn btn-danger" href="{{ path('sam_customer_regeneratealltokens', { 'id': customerId }) }}">
+        <span class="glyphicon glyphicon-repeat"></span>
+        {{'customer.token.regenerate_all'|trans}}
+    </a>
+    {% endif %}
+{% endblock %}
+
+{% block table_head -%}
+    <th>{{ 'customer.application'|trans }}</th>
+    <th>{{ 'customer.token.label'|trans }}</th>
+    <th>{{ 'customer.token.status'|trans }}</th>
+    {% if withTyr %}
+        <th>{{ 'customer.token.regenerate'|trans }}</th>
+    {% endif %}
+{% endblock %}
+
+{% block table_body -%}
+    {% if applicationsTokens|length == 0 %}
+        <tr>
+            <td colspan="4">
+                {{'global.no_items'|trans}}
+            </td>
+        </tr>
+    {% endif %}
+    {% for applicationToken in applicationsTokens %}
+        {% set allowed = false %}
+        <tr>
+            <td>{{ applicationToken.application.name }}</td>
+            <td>{{ applicationToken.token }}</td>
+            {% if applicationToken.isActive %}
+                {% set allowed = isTokenAllow(applicationToken.token, perimeters) %}
+                {% if allowed %}
+                    <td>{{'customer.token.enable'|trans}}</td>
+                {% else %}
+                    <td class="disable-token">{{'customer.token.unauthorized'|trans}}</td>
+                {% endif %}
+            {% else %}
+                <td>{{'customer.token.disable'|trans}}</td>
+            {% endif %}
+            {% if withTyr %}
+                <td>
+                    {% if applicationToken.isActive %}
+                        <a href="{{ path('sam_customer_regeneratetoken', { 'appId': applicationToken.application.id, 'id': customerId }) }}">
+                        <span class="glyphicon glyphicon-repeat array"></span>
+                    {% endif %}
+                </a></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+{% endblock %}

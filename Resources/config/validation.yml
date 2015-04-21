@@ -1,0 +1,11 @@
+CanalTP\NmmPortalBundle\Entity\Customer:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: identifier
+    properties:
+        navitiaEntity:
+            - Valid: ~
+
+CanalTP\NmmPortalBundle\Entity\NavitiaEntity:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email

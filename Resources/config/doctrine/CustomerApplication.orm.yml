@@ -1,0 +1,45 @@
+CanalTP\NmmPortalBundle\Entity\CustomerApplication:
+    type: entity
+    table: public.tj_customer_application_cap
+    repositoryClass: CanalTP\NmmPortalBundle\Entity\CustomerApplicationRepository
+    id:
+        id:
+            type: integer
+            id: true
+            column: cap_id
+            generator:
+                strategy: SEQUENCE
+    fields:
+        token:
+            type: string
+            column: cap_token
+            length: 255
+        isActive:
+            column: cap_is_active
+            type: boolean
+        created:
+            type: datetime
+            column: cap_created
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            column: cap_updated
+            gedmo:
+                timestampable:
+                    on: update
+    lifecycleCallbacks: {  }
+    manyToOne:
+        customer:
+            targetEntity: CanalTP\NmmPortalBundle\Entity\Customer
+            inversedBy: applications
+            joinColumn:
+                name: customer_id
+                referencedColumnName: cus_id
+        application:
+            targetEntity: CanalTP\SamCoreBundle\Entity\Application
+            inversedBy: customers
+            joinColumn:
+                name: application_id
+                referencedColumnName: app_id

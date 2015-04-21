@@ -1,0 +1,27 @@
+CanalTP\NmmPortalBundle\Entity\Perimeter:
+    type: entity
+    table: public.t_perimeter_per
+    repositoryClass: CanalTP\NmmPortalBundle\Entity\PerimeterRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            column: per_id
+            generator:
+                strategy: SEQUENCE
+        externalCoverageId:
+            type: string
+            length: 255
+            column: per_external_coverage_id
+        externalNetworkId:
+            type: string
+            length: 255
+            column: per_external_network_id
+    manyToOne:
+        navitiaEntity:
+            targetEntity: CanalTP\NmmPortalBundle\Entity\NavitiaEntity
+            inversedBy: perimeters
+            joinColumn:
+                name: nav_id
+                referencedColumnName: nav_id
+    lifecycleCallbacks: {  }

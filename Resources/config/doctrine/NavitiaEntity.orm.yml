@@ -1,0 +1,58 @@
+CanalTP\NmmPortalBundle\Entity\NavitiaEntity:
+    type: entity
+    table: t_navitia_entity_nav
+    repositoryClass: CanalTP\NmmPortalBundle\Entity\NavitiaEntityRepository
+    id:
+        id:
+            type: integer
+            id: true
+            column: nav_id
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+            column: nav_name
+        nameCanonical:
+            type: string
+            length: 255
+            column: nav_name_canonical
+        email:
+            type: string
+            length: 255
+            column: nav_email
+        emailCanonical:
+            type: string
+            length: 255
+            column: nav_email_canonical
+        created:
+            type: datetime
+            column: nav_created
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            column: nav_updated
+            gedmo:
+                timestampable:
+                    on: update
+    uniqueConstraints:
+        cus_email_idx:
+            columns: [ nav_email, nav_email_canonical ]
+    oneToOne:
+        customer:
+            targetEntity: Customer
+            cascade: [persist]
+            mappedBy: navitiaEntity
+    oneToMany:
+        perimeters:
+            targetEntity: CanalTP\NmmPortalBundle\Entity\Perimeter
+            mappedBy: navitiaEntity
+            cascade: [persist]
+        tokens:
+            targetEntity: CanalTP\NmmPortalBundle\Entity\NavitiaToken
+            mappedBy: navitiaEntity
+            cascade: [persist]
+    lifecycleCallbacks: {  }

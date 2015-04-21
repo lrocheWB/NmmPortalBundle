@@ -1,0 +1,96 @@
+parameters:
+    navitia_component.class: Navitia\Component\Service\ServiceFacade
+    sam_navitia.class: CanalTP\NmmPortalBundle\Services\Navitia
+    navitia_token_manager.class: CanalTP\NmmPortalBundle\Services\NavitiaTokenManager
+
+    #SAM conf
+    sam_core.slugify.class: CanalTP\SamCoreBundle\Slugify
+    sam_core.role_listener.class: CanalTP\SamCoreBundle\Doctrine\RoleListener
+    sam_core.doctrine.entity_listener_resolver.class: CanalTP\SamCoreBundle\Doctrine\EntityListenerResolver
+
+    sam_component_authentication_handler.class: CanalTP\SamCoreBundle\Component\Authentication\Handler\LoginSuccessHandler
+    sam_user_registration_listener.class: CanalTP\SamCoreBundle\Form\EventListener\RegistrationSuscriber
+    # Monitoring
+    sam.business_monitoring.nmm.class: CanalTP\SamCoreBundle\Monitoring\Component
+
+    sam_core.customer.class: CanalTP\NmmPortalBundle\Services\CustomerManager
+    sam_core.navitia_user.class: CanalTP\NmmPortalBundle\Services\NavitiaEntityManager
+    sam_core.customer.application.transformer.class: CanalTP\NmmPortalBundle\Form\DataTransformer\ApplicationToCustomerApplicationTransformer
+
+#    nmm.navitia_entity.class: CanalTP\NmmPortalBundle\Services\NavitiaEntityManager
+    nmm.perimeter_manager.class: CanalTP\NmmPortalBundle\Services\PerimeterManager
+    nmm.customer.application.transformer_with_token.class: CanalTP\NmmPortalBundle\Form\DataTransformer\ApplicationToCustomerApplicationTransformerWithToken
+
+services:
+    navitia_component:
+        class:          "%navitia_component.class%"
+        factory_class:  "%navitia_component.class%"
+        factory_method: getInstance
+        arguments: ['@navitia_profiler']
+        calls:
+            - [ setConfiguration, [%config.navitia%]]
+
+    navitia_token_manager:
+        class: %navitia_token_manager.class%
+        arguments: [%nmm.tyr.url%, @sam_navitia]
+
+    # Service de gestion des network
+    sam_navitia:
+        class: %sam_navitia.class%
+        arguments: ['@navitia_component']
+
+    nmm.perimeter_manager:
+        class: %nmm.perimeter_manager.class%
+        arguments: ['@doctrine.orm.entity_manager']
+
+    #SAM conf
+    sam_core.slugify:
+        class: %sam_core.slugify.class%
+
+    sam_core.role_listener:
+        class: %sam_core.role_listener.class%
+        arguments: ['@sam_core.slugify']
+        tags:
+            -  { name: doctrine.entity_listener }
+
+    sam_core.doctrine.entity_listener_resolver:
+        class: %sam_core.doctrine.entity_listener_resolver.class%
+        arguments: [ "@service_container" ]
+
+    sam.component.authentication.handler.login_success_handler:
+        class:          "%sam_component_authentication_handler.class%"
+        arguments:  ['@doctrine', '@router', '@session']
+
+    # Monitoring
+    sam.business_monitoring.nmm:
+        class: "%sam.business_monitoring.nmm.class%"
+
+    nmm.service_monitoring.database.psql:
+        class: "%sam.service_monitoring.database.pgsql.class%"
+        arguments: [%database_host%, %database_port%, %database_name%, %database_user%, %database_password%]
+        tags:
+            - { name: service_monitoring, category: Tech }
+
+    nmm.service_monitoring.login:
+        class: "%sam.service_monitoring.http.rest.class%"
+        arguments: [%monitoring.sam.host%, 'NMM Application', 302]
+        tags:
+            - { name: service_monitoring, category: Business }
+
+    sam_core.twig.token_extension:
+        class: CanalTP\NmmPortalBundle\Twig\TokenExtension
+        arguments: [@navitia_token_manager]
+        tags:
+            - { name: twig.extension }
+
+#    nmm.navitia_entity:
+#        class: %nmm.navitia_entity.class%
+#        arguments: ['@doctrine.orm.entity_manager', @navitia_token_manager]
+
+    sam_core.navitia_user:
+        class: %sam_core.navitia_user.class%
+        arguments: ['@doctrine.orm.entity_manager', @navitia_token_manager]
+
+    nmm.customer.application.transformer_with_token:
+        class: %nmm.customer.application.transformer_with_token.class%
+        arguments: ['@doctrine.orm.entity_manager', '@navitia_token_manager']

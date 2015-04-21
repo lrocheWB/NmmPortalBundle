@@ -1,0 +1,20 @@
+{% extends "::base.html.twig" %}
+
+{% block navbar_brand %}NMM{% endblock %}
+
+{% block body %}
+    {% block subheader %}
+    {% endblock %}
+    {% block container %}
+    {% endblock %}
+    <h1>Welcome to NMM Backoffice</h1>
+    <div id="base-modal" class="modal fade">
+    {% block base_modal %}
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    {% endblock %}
+    </div><!-- /.modal -->
+{% endblock %}
+
