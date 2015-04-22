@@ -23,6 +23,11 @@ class CanalTPNmmPortalExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
+        $container->setParameter(
+            'config.navitia',
+            $config['navitia']
+        );
         $loader->load('services.yml');
     }
 }
