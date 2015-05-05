@@ -28,6 +28,19 @@ class CanalTPNmmPortalExtension extends Extension
             'config.navitia',
             $config['navitia']
         );
+        $container->setParameter(
+            'config.navitia.url',
+            $config['navitia']['url']
+        );
+        $container->setParameter(
+            'nmm.navitia.token',
+            $config['navitia']['token']
+        );
+        $container->setParameter(
+            'nmm.tyr.url',
+            $config['tyr']['url']
+        );
+
         $loader->load('services.yml');
     }
 }
