@@ -243,12 +243,12 @@ class Navitia
 
         return $this->navitia_component->call($query);
     }
-    
+
     /**
      * Gets status by coverage id
-     * 
+     *
      * @param string $coverageId Navitia Coverage Id
-     * 
+     *
      * @return array
      */
     public function getStatusByCoverageId($coverageId)
