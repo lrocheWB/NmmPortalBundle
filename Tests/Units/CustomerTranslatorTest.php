@@ -4,6 +4,7 @@ namespace CanalTP\NmmPortalBundle\Tests\Units;
 
 use Symfony\Bundle\FrameworkBundle\Tests\Translation\TranslatorTest;
 use Symfony\Component\Translation\MessageSelector;
+use Symfony\Component\Translation\Loader\ArrayLoader;
 
 class CustomerTranslatorTest extends TranslatorTest
 {
@@ -18,13 +19,29 @@ class CustomerTranslatorTest extends TranslatorTest
 
     private function mockSecurityContext()
     {
+        $customerStub = $this->getMockBuilder('CanalTP\NmmPortalBundle\Entity\Customer')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $customerStub
+            ->expects($this->any())
+            ->method('getIdentifier')
+            ->will($this->returnValue('canaltp'));
+
+        $userStub = $this->getMockBuilder('CanalTP\SamEcoreUserManagerBundle\Entity\User')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $userStub
+            ->expects($this->any())
+            ->method('getCustomer')
+            ->will($this->returnValue($customerStub));
+
         $tokenStub = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $tokenStub
             ->expects($this->any())
             ->method('getUser')
-            ->will($this->returnValue('anon.'));
+            ->will($this->returnValue($userStub));
 
         $this->securityContext = $this
             ->getMockBuilder('Symfony\Component\Security\Core\SecurityContextInterface')
@@ -73,5 +90,16 @@ class CustomerTranslatorTest extends TranslatorTest
         $translator->addResource('loader', 'foo', 'sr@latin'); // Latin Serbian
 
         return $translator;
+    }
+
+    public function testTransWithCustomCustomer()
+    {
+        $translator = $this->getTranslator($this->getLoader());
+        $translator->addLoader('array', new ArrayLoader());
+        $translator->setLocale('fr');
+        $translator->setFallbackLocales(array('en', 'es', 'pt-PT', 'pt_BR', 'fr.UTF-8', 'sr@latin'));
+        $translator->addResource('array', array('body.title' => 'canaltp'), 'fr', 'canaltp');
+
+        $this->assertEquals('canaltp', $translator->trans('body.title', array()));
     }
 }
