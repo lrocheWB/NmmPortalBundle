@@ -19,7 +19,7 @@ class CustomerTranslatorTest extends TranslatorTest
 
     private function mockSecurityContext()
     {
-        $customerStub = $this->getMockBuilder('CanalTP\NmmPortalBundle\Entity\Customer')
+        $customerStub = $this->getMockBuilder('CanalTP\SamCoreBundle\Entity\CustomerInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $customerStub
@@ -98,8 +98,12 @@ class CustomerTranslatorTest extends TranslatorTest
         $translator->addLoader('array', new ArrayLoader());
         $translator->setLocale('fr');
         $translator->setFallbackLocales(array('en', 'es', 'pt-PT', 'pt_BR', 'fr.UTF-8', 'sr@latin'));
+        $translator->addResource('array', array('body.title' => 'product'), 'fr');
         $translator->addResource('array', array('body.title' => 'canaltp'), 'fr', 'canaltp');
+        $translator->addResource('array', array('body.title' => 'transilien'), 'fr', 'transilien');
 
         $this->assertEquals('canaltp', $translator->trans('body.title', array()));
+        $this->assertEquals('canaltp', $translator->trans('body.title', array(), 'canaltp'));
+        $this->assertEquals('transilien', $translator->trans('body.title', array(), 'transilien'));
     }
 }
