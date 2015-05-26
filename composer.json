@@ -41,7 +41,6 @@
         "canaltp/sam-core-bridge-bundle": "0.5.*"
     },
     "autoload": {
-        "psr-0": { "CanalTP\\NmmPortalBundle\\": "" }
-    },
-    "target-dir": "CanalTP/NmmPortalBundle/"
+        "psr-4": { "CanalTP\\NmmPortalBundle\\": "" }
+    }
 }
