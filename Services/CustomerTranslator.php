@@ -2,6 +2,7 @@
 
 namespace CanalTP\NmmPortalBundle\Services;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
@@ -17,10 +18,10 @@ class CustomerTranslator extends Translator implements TranslatorInterface, Tran
 
     private function initCustomerDomain($id, $locale, $domain = null)
     {
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $token = $this->container->get('security.context')->getToken();
 
-        if ($this->customerId === null && $user != 'anon.') {
-            $this->customerId = $user->getCustomer()->getIdentifier();
+        if ($this->customerId === null && $token instanceof TokenInterface && $token->getUser() != 'anon.') {
+            $this->customerId = $token->getUser()->getCustomer()->getIdentifier();
         }
 
         if ($domain === null && $this->customerId !== null && $this->catalogues[$locale]->has((string) $id, $this->customerId)) {
