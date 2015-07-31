@@ -208,14 +208,14 @@ class Navitia
      *
      * @return type
      */
-    public function getRoute($coverageId, $routeId)
+    public function getRoute($coverageId, $routeId, $depth = 1)
     {
         $query = array(
             'api' => 'coverage',
             'parameters' => array(
                 'region'    => $coverageId,
                 'path_filter'    => 'routes/' . $routeId,
-                'parameters'=> '?depth=1'
+                'parameters'=> '?depth=' . $depth
             )
         );
 
