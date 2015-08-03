@@ -26,15 +26,17 @@ class Navitia
     /**
      * Retourn les lignes navitia rattachées à une région et un réseau.
      *
-     * @param string $externalCoverageId
-     * @param string $networkId
+     * @param string   $externalCoverageId
+     * @param string   $networkId
+     * @param int      $depth
+     * @param int|null $count
      *
      * @return array
      */
-    public function getLines($externalCoverageId, $networkId, $depth = 0, $count = false)
+    public function getLines($externalCoverageId, $networkId, $depth = 0, $count = null)
     {
         $parameters = '?depth='.$depth;
-        $parameters .= ($count !== false) ? '&count='.$count : '';
+        $parameters .= ($count !== null) ? '&count='.$count : '';
         $query = array(
             'api' => 'coverage',
             'parameters' => array(
@@ -177,7 +179,7 @@ class Navitia
      * Get one Stop Point.
      *
      * @param string $coverageId
-     * @param string $networkId
+     * @param string $stopPointId
      *
      * @return stdClass
      */
@@ -225,6 +227,7 @@ class Navitia
      *
      * @param string $coverageId
      * @param string $routeId
+     * @param int    $depth
      *
      * @return stdClass
      */
