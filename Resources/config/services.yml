@@ -1,4 +1,5 @@
 parameters:
+    translator.class: CanalTP\NmmPortalBundle\Services\CustomerTranslator
     navitia_component.class: Navitia\Component\Service\ServiceFacade
     sam_navitia.class: CanalTP\NmmPortalBundle\Services\Navitia
     navitia_token_manager.class: CanalTP\NmmPortalBundle\Services\NavitiaTokenManager

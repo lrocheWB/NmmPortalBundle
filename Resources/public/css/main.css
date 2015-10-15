@@ -105,6 +105,9 @@ hr.black{
     height:40px;
     width:120px;
 }
+#sam-navbar .dropdown-menu > li > a{
+    text-align: left;
+}
 #application-navbar{
     background-color:white;
     margin-top:16px;

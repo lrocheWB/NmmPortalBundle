@@ -12,9 +12,9 @@ class Navitia
     }
 
     /**
-     * Set token
+     * Set token.
      *
-     * @param  type $token
+     * @param string $token
      */
     public function setToken($token)
     {
@@ -24,37 +24,41 @@ class Navitia
     }
 
     /**
-     * Retourn les lignes navitia rattachés à une région et un réseau
+     * Retourn les lignes navitia rattachées à une région et un réseau.
      *
-     * @param  type $externalCoverageId
-     * @param  type $networkId
-     * @return type
+     * @param string   $externalCoverageId
+     * @param string   $networkId
+     * @param int      $depth
+     * @param int|null $count
+     *
+     * @return array
      */
-    public function getLines($externalCoverageId, $networkId, $depth = 0, $count = false)
+    public function getLines($externalCoverageId, $networkId, $depth = 0, $count = null)
     {
-        $parameters = '?depth=' . $depth;
-        $parameters .= ($count !== false) ? '&count=' . $count : '';
+        $parameters = '?depth='.$depth;
+        $parameters .= ($count !== null) ? '&count='.$count : '';
         $query = array(
             'api' => 'coverage',
             'parameters' => array(
                 'region' => $externalCoverageId,
                 'action' => 'lines',
-                'path_filter' => 'networks/' . $networkId,
-                'parameters' => $parameters
-            )
+                'path_filter' => 'networks/'.$networkId,
+                'parameters' => $parameters,
+            ),
         );
 
         return $this->navitia_component->call($query);
     }
 
     /**
-     * Return Line by $coverageId $networkId $lineId
+     * Return Line by $coverageId $networkId $lineId.
      *
-     * @param  type $coverageId
-     * @param  type $networkId
-     * @param  type $lineId
-     * @param  type $depth
-     * @return type
+     * @param string $coverageId
+     * @param string $networkId
+     * @param string $lineId
+     * @param int    $depth
+     *
+     * @return stdClass
      */
     public function getLine($coverageId, $networkId, $lineId, $depth = 0)
     {
@@ -63,16 +67,16 @@ class Navitia
             'parameters' => array(
                 'region' => $coverageId,
                 'action' => 'lines',
-                'path_filter' => 'networks/' . $networkId . '/lines/' . $lineId,
-                'parameters' => '?depth=' . $depth
-            )
+                'path_filter' => 'networks/'.$networkId.'/lines/'.$lineId,
+                'parameters' => '?depth='.$depth,
+            ),
         );
 
         return $this->navitia_component->call($query);
     }
 
     /**
-     * Retourne les networks navitia rattaché à une région (sim)
+     * Retourne les networks navitia rattachés à une région (sim).
      *
      * @param string $externalCoverageId
      * @param array  $params             Parameters (like count)
@@ -87,7 +91,7 @@ class Navitia
             'parameters' => array(
                 'region' => $externalCoverageId,
                 'action' => 'networks',
-            )
+            ),
         );
 
         if (!empty($params)) {
@@ -98,10 +102,12 @@ class Navitia
     }
 
     /**
-     * Récupération des réseaux sélectionnables depuis naviatia
+     * Récupération des réseaux sélectionnables depuis naviatia.
      *
      * @param string $externalCoverageId
      * @param array  $params             Parameters (like count)
+     *
+     * @return array
      */
     public function getNetWorks($externalCoverageId, array $params = array())
     {
@@ -119,10 +125,12 @@ class Navitia
     }
 
     /**
-     * Récupération des labels des réseaux sélectionnables depuis naviatia
-     * @param  type $externalCoverageId
-     * @param  type $network
-     * @return type
+     * Récupération des labels des réseaux sélectionnables depuis naviatia.
+     *
+     * @param string $externalCoverageId
+     * @param array  $network
+     *
+     * @return array
      */
     public function getNetworkWithLabel($externalCoverageId, $network)
     {
@@ -140,9 +148,19 @@ class Navitia
         return $aRegionNetwork;
     }
 
+    /**
+     * Retourne les stop points.
+     *
+     * @param string $coverageId
+     * @param string $networkId
+     * @param string $lineId
+     * @param string $routeId
+     *
+     * @return array
+     */
     public function getStopPoints($coverageId, $networkId, $lineId, $routeId)
     {
-        $pathFilter = 'networks/' . $networkId . '/lines/' . $lineId .'/routes/' . $routeId;
+        $pathFilter = 'networks/'.$networkId.'/lines/'.$lineId.'/routes/'.$routeId;
 
         $query = array(
             'api' => 'coverage',
@@ -150,41 +168,45 @@ class Navitia
                 'region' => $coverageId,
                 'action' => 'route_schedules',
                 'path_filter' => $pathFilter,
-                'parameters' => '?depth=0'
-            )
+                'parameters' => '?depth=0',
+            ),
         );
+
         return $this->navitia_component->call($query);
     }
 
     /**
-     * Get one Stop Point
+     * Get one Stop Point.
      *
-     * @param  type $coverageId
-     * @param  type $networkId
-     * @return type
+     * @param string $coverageId
+     * @param string $stopPointId
+     *
+     * @return stdClass
      */
     public function getStopPoint($coverageId, $stopPointId)
     {
-        $pathFilter = 'stop_points/' . $stopPointId;
+        $pathFilter = 'stop_points/'.$stopPointId;
 
         $query = array(
             'api' => 'coverage',
             'parameters' => array(
                 'region' => $coverageId,
                 'path_filter' => $pathFilter,
-                'parameters' => '?depth=0'
-            )
+                'parameters' => '?depth=0',
+            ),
         );
+
         return $this->navitia_component->call($query);
     }
 
     /**
-     * Returns modes (commercial|physical) used on a network
+     * Returns modes (commercial|physical) used on a network.
      *
-     * @param  String $coverageId
-     * @param  type $networkId
-     * @param  Boolean $commercial if true commercial_modes returned, else physical_modes
-     * @return type
+     * @param string $coverageId
+     * @param string $networkId
+     * @param bool   $commercial if true commercial_modes returned, else physical_modes
+     *
+     * @return array
      */
     public function getNetworkModes($coverageId, $networkId, $commercial = true)
     {
@@ -193,29 +215,30 @@ class Navitia
             'parameters' => array(
                 'region' => $coverageId,
                 'action' => $commercial ? 'commercial_modes' : 'physical_modes',
-                'path_filter' => 'networks/' . $networkId
-            )
+                'path_filter' => 'networks/'.$networkId,
+            ),
         );
 
         return $this->navitia_component->call($query);
     }
 
     /**
-     * Returns Basic Route data with corresponding line data
+     * Returns Basic Route data with corresponding line data.
      *
-     * @param  String $coverageId
-     * @param  String $routeId
+     * @param string $coverageId
+     * @param string $routeId
+     * @param int    $depth
      *
-     * @return type
+     * @return stdClass
      */
-    public function getRoute($coverageId, $routeId)
+    public function getRoute($coverageId, $routeId, $depth = 1)
     {
         $query = array(
             'api' => 'coverage',
             'parameters' => array(
-                'region'    => $coverageId,
-                'path_filter'    => 'routes/' . $routeId,
-                'parameters'=> '?depth=1'
+                'region'      => $coverageId,
+                'path_filter' => 'routes/'.$routeId,
+                'parameters'  => '?depth='.$depth
             )
         );
 
@@ -223,9 +246,9 @@ class Navitia
     }
 
     /**
-     * Get Navitia Component
+     * Get Navitia Component.
      *
-     * @return \Navitia\Component\Service\ServiceFacade Navitia Component Facade
+     * @return ServiceFacade Navitia Component Facade
      */
     public function getNavitiaComponent()
     {
@@ -233,9 +256,9 @@ class Navitia
     }
 
     /**
-     * Returns coverages
+     * Returns coverages.
      *
-     * @return coverages
+     * @return array
      */
     public function getCoverages()
     {
@@ -243,12 +266,12 @@ class Navitia
 
         return $this->navitia_component->call($query);
     }
-    
+
     /**
-     * Gets status by coverage id
-     * 
+     * Gets status by coverage id.
+     *
      * @param string $coverageId Navitia Coverage Id
-     * 
+     *
      * @return array
      */
     public function getStatusByCoverageId($coverageId)
@@ -257,8 +280,8 @@ class Navitia
             'api' => 'coverage',
             'parameters' => array(
                 'region' => $coverageId,
-                'path_filter' => 'status'
-            )
+                'path_filter' => 'status',
+            ),
         );
 
         return $this->navitia_component->call($query);

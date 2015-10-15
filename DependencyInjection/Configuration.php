@@ -18,11 +18,42 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('canal_tp_sam_nmm_portal');
+        $rootNode = $treeBuilder->root('canal_tp_nmm_portal');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+        ->children()
+            ->arrayNode('navitia')
+                ->info('NAViTiA configuration')
+                ->children()
+                        ->scalarNode('url')
+                        ->cannotBeEmpty()
+                        ->isRequired()
+                    ->end()
+                    ->scalarNode('format')
+                        ->defaultValue('object')
+                    ->end()
+                    ->scalarNode('response_error')
+                        ->defaultValue('exception')
+                    ->end()
+                    ->scalarNode('token')
+                        ->cannotBeEmpty()
+                        ->isRequired()
+                    ->end()
+                ->end()
+            ->end()
+            ->scalarNode('enable_logs')
+                ->info('Enable logs')
+                ->defaultValue(false)
+            ->end()
+            ->arrayNode('tyr')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('url')
+                        ->defaultNull()
+                    ->end()
+                ->end()
+            ->end()
+        ->end();
 
         return $treeBuilder;
     }
