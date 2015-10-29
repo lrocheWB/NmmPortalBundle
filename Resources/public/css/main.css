@@ -234,12 +234,13 @@ hr.black{
     font-weight:bold;
 }
 a.logo,
+span.logo,
 a.icons{
     background-image:url('../img/sprite.png');
     display:block;
 }
-a.logo.canaltp{
-    background-position:-6px 80px;
+span.logo.canaltp{
+    background-position:-6px 85px;
     height:60px;
     width:115px;
 }
