@@ -15,6 +15,7 @@ var require = {
         jquery_tablesorter:             'bundles/canaltpsamcore/js/jquery.tablesorter.min',
         jquery_tablesorter_pager:       'bundles/canaltpsamcore/js/jquery.tablesorter.pager.min',
         jquery_tablesorter_widgets:     'bundles/canaltpsamcore/js/jquery.tablesorter.widgets.min',
+        jquery_limit:                   'components/jquery/limit/jquery.limit-1.2',
         bootstrap:                      'js/bootstrap',
         'bootstrap-extensions/table':   'components/bootstrap-extensions/table/js/bootstrap-table.min',
         'bootstrap/datepicker':         'components/bootstrap-datepicker/bootstrap-datepicker-built',
@@ -37,6 +38,9 @@ var require = {
     },
     shim: {
         'bootstrap-extensions/table': {
+            deps: ['jquery']
+        },
+        jquery_limit: {
             deps: ['jquery']
         },
         sf_routes: {
