@@ -18,6 +18,7 @@ var require = {
         jquery_limit:                   'components/jquery/limit/jquery.limit-1.2',
         bootstrap:                      'js/bootstrap',
         'bootstrap-extensions/table':   'components/bootstrap-extensions/table/js/bootstrap-table.min',
+        'bootstrap-extensions/locale_fr-FR':        'components/bootstrap-extensions/table/js/locale/bootstrap-table-fr-FR',
         'bootstrap/datepicker':         'components/bootstrap-datepicker/bootstrap-datepicker-built',
         'bootstrap/datepicker/fr':      'bundles/canaltpsamcore/js/bootstrap-datepicker.fr',
         // routes
@@ -39,6 +40,9 @@ var require = {
     shim: {
         'bootstrap-extensions/table': {
             deps: ['jquery']
+        },
+        'bootstrap-extensions/locale_fr-FR': {
+            deps: ['bootstrap-extensions/table']
         },
         jquery_limit: {
             deps: ['jquery']
