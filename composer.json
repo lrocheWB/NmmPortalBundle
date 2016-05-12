@@ -32,13 +32,13 @@
         }
     ],
     "require": {
-        "canaltp/sam-core-bridge-bundle": "^1.0"
+        "canaltp/sam-core-bridge-bundle": "^1.0",
+        "symfony/translation": "2.6.*",
+        "symfony/security": "2.6.*"
     },
     "require-dev": {
-        "symfony/translation": "2.6.*",
-        "symfony/security": "2.6.*",
         "phpunit/phpunit": "4.5.*",
-	    "squizlabs/php_codesniffer": "^2.0"
+        "squizlabs/php_codesniffer": "^2.0"
     },
     "autoload": {
         "psr-4": { "CanalTP\\NmmPortalBundle\\": "" }
