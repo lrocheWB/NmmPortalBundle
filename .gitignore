@@ -1,3 +1,7 @@
 vendor/
 composer.lock
 phpunit.xml
+junit.xml
+docs/
+coverage.xml
+checkstyle-result.xml
