@@ -53,6 +53,14 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
+            ->arrayNode('fenrir')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('url')
+                        ->defaultNull()
+                    ->end()
+                ->end()
+            ->end()
         ->end();
 
         return $treeBuilder;
