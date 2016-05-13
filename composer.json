@@ -5,6 +5,9 @@
     "keywords": [],
     "homepage": "https://github.com/CanalTP/NmmPortalBundle",
     "license": "AGPLv3",
+    "config": {
+        "secure-http": false
+    },
     "authors": [
         {
             "name": "Rémy Abi-Khalil",
@@ -31,17 +34,15 @@
             "email": "arnaud.ogiela@canaltp.fr"
         }
     ],
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "packagist.canaltp.fr"
-        }
-    ],
     "require": {
-        "canaltp/sam-core-bridge-bundle": "^1.0"
+        "canaltp/sam-core-bridge-bundle": "^1.0",
+        "canaltp/fenrir-api-client-bundle": "^1.0",
+        "symfony/translation": "2.6.*",
+        "symfony/security": "2.6.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.5.*"
+        "phpunit/phpunit": "4.5.*",
+        "squizlabs/php_codesniffer": "^2.0"
     },
     "autoload": {
         "psr-4": { "CanalTP\\NmmPortalBundle\\": "" }
